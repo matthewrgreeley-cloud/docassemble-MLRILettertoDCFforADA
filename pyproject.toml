@@ -1,0 +1,28 @@
+license = "MIT"
+license-files = [
+    "LICENSE",
+]
+
+[build-system]
+requires = [
+    "setuptools==80.9.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "docassemble.MLRILettertoDCFforADA"
+version = "0.0.1"
+description = "An interview to allow a user to automatically create a letter to DCF for ADA accommodations"
+readme = "README.md"
+authors = [
+    { name = "Suffolk Litlab", email = "Litlab@suffolk.edu" },
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://docassemble.org"
+
+[tool.setuptools.packages.find]
+where = [
+    ".",
+]

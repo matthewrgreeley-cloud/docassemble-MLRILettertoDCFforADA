@@ -1,0 +1,414 @@
+---
+include:
+  - docassemble.AssemblyLine:assembly_line.yml
+---
+metadata:
+  title: >-
+    DCF disability accommodations
+  short title: >-
+    DCF accommodations
+  description: |-
+    This interview helps someone in Massachusetts get a change in rules when talking with DCF.
+  can_I_use_this_form: |
+    If you are a disabled and a parent or caregiver, you can use this interview to get adjustments related to your disability to be able to care for your child or ward, especially
+  before_you_start: |
+    This interview will help you get a change in rules when talking with DCF.
+    Please select any changes you need to better help you take care of your child or ward.
+  maturity: production
+  estimated_completion_minutes: 10
+  estimated_completion_delta: 5
+  LIST_topics: 
+    - "FA-09-00-00-00"
+    - "FA-14-00-00-00"
+    - "RI-03-00-00-00"
+  tags:
+    - "FA-09-00-00-00"
+    - "FA-14-00-00-00"
+    - "RI-03-00-00-00"
+  authors:
+    - Matthew Greeley
+  original_form: []
+  original_form_published_on: ""
+  allowed_courts: []
+  typical_role: "plaintiff"
+  al_weaver_version: "1.11.0"
+  generated_on: "2025-09-15"
+  languages:
+    - en
+  jurisdiction: NAM-US-US+MA
+  review_date: 2025-09-15
+  form_titles:
+    - DCF disability accommodations
+  form_numbers: []
+  update_notes: |
+---
+code: |
+  # This controls the default country and list of states in address field questions
+  AL_DEFAULT_COUNTRY = "US"
+---
+code: |
+  # This controls the default state in address field questions
+  AL_DEFAULT_STATE = "MA"
+---
+code: |
+  github_repo_name =  'docassemble-DcfDisabilityAccommodations'
+---
+code: |
+  interview_short_title = "Get a change in rules when talking with DCF"
+---
+code: |
+  al_form_type = "letter" 
+---
+objects:
+  - users: ALPeopleList.using(ask_number=True,target_number=1)
+---
+sections:
+  - review_dcf_disability_accommodations: Review your answers
+---
+#################### Interview order #####################
+comment: |
+  Controls order and branching logic for questions specific to this form
+id: interview_order_dcf_disability_accommodations
+code: |
+  # Set the allowed courts for this interview
+  nav.set_section("review_dcf_disability_accommodations")
+  user_role = "plaintiff"
+  user_ask_role = "plaintiff"
+  users.gather()
+  set_parts(subtitle=str(users))
+  is_visual_calendar
+  users[0].contact_other
+  interview_order_dcf_disability_accommodations = True
+---
+###################### Main order ######################
+comment: |
+  This block includes the logic for standalone interviews.
+  Delete mandatory: True to include in another interview
+mandatory: True
+code: |
+  al_intro_screen
+  dcf_disability_accommodations_intro
+  interview_order_dcf_disability_accommodations
+  signature_date
+  # Store anonymous data for analytics / statistics
+  store_variables_snapshot(
+      persistent=True,
+      data={
+          "zip": showifdef("users[0].address.zip"),
+          "reached_interview_end": True,
+      },
+  )
+  dcf_disability_accommodations_download
+---
+id: DCF_disability_accommodations
+continue button field: dcf_disability_accommodations_intro
+question: |
+  DCF disability accommodations
+subquestion: |
+  This interview will help you get a change in rules when talking with DCF.
+  Please select any changes you need to better help you take care of your child or ward.
+
+  If you are a disabled and a parent or caregiver, you can use this interview to get adjustments related to your disability to be able to care for your child or ward
+---
+id: adaptive_parenting_equipment
+question: Do you need a type of adpative parenting equiment?
+fields:
+  - "I need a type of adaptive parenting equipment": is_adaptive_equipment_any
+    datatype: checkboxes
+    choices:
+    - "I need braille Books"
+    - "I need talking thermometers"
+    - "I need a tactile medicine dispenser"
+    - "I need speech-to-text tools"
+    - "I need text-to-speech tools"
+    - "I need closed captioning during virtual meetings"
+continue button field: What type s of changes do you need
+---
+id: Bulk
+question: |
+  What type(s) of changes do you need?
+fields:
+  - "I need a visual calendar for my appointments I can hang on my wall": is_visual_calendar
+    datatype: yesno
+  - "I need a different parenting schedule": is_diff_par_sched
+    datatype: yesno
+    required: False
+  - "I need hands on learning during appointments about child's medical or early intervention services appointments": is_handson_learning_med
+    datatype: yesno
+  - "I need meeting notes": is_meeting_notes
+    datatype: yesno
+  - "I need longer parenting time": is_longer_par_time
+    datatype: yesno
+  - "I need to bring a plus one to meetings": is_plusone_meetings
+    datatype: yesno
+  - "I need extra processing time during meetings, including breaks": is_extra_time
+    datatype: yesno
+    required: False
+  - "I need DCF to translate the things they give me to plain language": is_translation_plainlanguage
+    datatype: yesno
+    required: False
+  - "I need appointment reminders from": is_appointment_reminders
+    datatype: yesno
+    required: False
+  - "Different location": is_diff_loc
+    datatype: yesno
+  - "Shorter parenting time": is_shorter_par_time
+    datatype: yesno
+  - "Other fill-in one": is_other_filling_1
+    datatype: yesno
+  - "I need a written summary of any meeting with DCF or its contractors": is_written_summary
+    datatype: yesno
+  - "I need meetings with the DCF to be virtual": is_virtual_meetings
+    datatype: yesno
+  - "I need letters and DCF action plans to be written in an easier way to understand": is_change_letters_written_simpler
+    datatype: yesno
+  - "Meeting materials preprepared": is_meeting_materials_preprepared
+    datatype: yesno
+  - "I need a change in how parenting skills are taught": is_change_taught_par_skills_any
+    datatype: checkboxes
+    choices:
+      - Being shown how to use the skills in my home
+      - Using pictures rather than words for step-by-step instructions
+    required: False
+  - "I need interpreation and translation services": is_translation_any
+    datatype: checkboxes
+    choices:
+      - American Sign Language
+      - Certified Deaf Interpreter
+      - Communication Access Real-time Translation (CART)
+    required: False
+  - "Other accommodation not listed": other_any_one
+    required: False
+  - "Other accommodation not listed": other_any_two
+    required: False
+  - "What Dcf region do you live in?": DCF_region
+    datatype: checkboxes
+    choices:
+      - Boston Region
+      - Northern Region
+      - Southern Region
+      - Western Region
+      - Central Region
+---
+question: |
+  How can DCF contact you?
+fields:
+  - "Your phone number": users[0].contact_phone
+    datatype: number
+  - "User's non-phone contact information": users[0].contact_other
+    required: False
+---
+id: preview dcf_disability_accommodations
+question: |
+  Preview your form before you sign it
+subquestion: |
+  Here is a preview of the form you will sign on the next page.   
+  
+  ${ al_recipient_bundle.as_pdf(key='preview') }
+
+  Click the image to open it in a new tab. Click the "Edit answers" button
+  to edit your answers.
+
+  ${ action_button_html(url_action('review_dcf_disability_accommodations'), label='Edit answers', color='info') }
+  
+  Remember to come back to this window to continue and sign your form.
+continue button field: dcf_disability_accommodations_preview_question    
+---
+code: |
+  signature_fields = []
+---
+id: dcf disability accommodations review screen
+event: review_dcf_disability_accommodations
+question: |
+  Review your answers
+review:
+  - Edit: is_visual_calendar
+    button: |
+      **Visual calendar**:
+      ${ word(yesno(is_visual_calendar)) }
+  - Edit: is_adaptive_equipment_any
+    button: |
+      **Adaptive equipment**:
+      ${ is_adaptive_equipment_any }
+  - Edit: other_any_one
+    button: |
+      **Other option one**:
+      ${ other_any_one }
+  - Edit: users.revisit
+    button: |
+      **Users**
+
+      % for item in users:
+        * ${ item }
+      % endfor
+  - Edit: other_any_three
+    button: |
+      **Other Option three**:
+      ${ other_any_three }
+  - Edit: is_diff_par_sched
+    button: |
+      **Different parenting schedule**:
+      ${ word(yesno(is_diff_par_sched)) }
+  - Edit: is_handson_learning_med
+    button: |
+      **Hands on learning during appointments**:
+      ${ word(yesno(is_handson_learning_med)) }
+  - Edit: is_meeting_notes
+    button: |
+      **Meeting notes**:
+      ${ word(yesno(is_meeting_notes)) }
+  - Edit: is_bestcontact_other
+    button: |
+      **Is best contact other**:
+      ${ word(yesno(is_bestcontact_other)) }
+  - Edit: is_other_filling_3
+    button: |
+      **Other fill-in three**:
+      ${ word(yesno(is_other_filling_3)) }
+  - Edit: is_longer_par_time
+    button: |
+      **Longer parenting time**:
+      ${ word(yesno(is_longer_par_time)) }
+  - Edit: is_plusone_meetings
+    button: |
+      **Plus one to meetings**:
+      ${ word(yesno(is_plusone_meetings)) }
+  - Edit: is_extra_time
+    button: |
+      **Extra processing time**:
+      ${ word(yesno(is_extra_time)) }
+  - Edit: is_other_filling_2
+    button: |
+      **Other fill-in two**:
+      ${ word(yesno(is_other_filling_2)) }
+  - Edit: is_bestcontact_phone
+    button: |
+      **Is best contact phone**:
+      ${ word(yesno(is_bestcontact_phone)) }
+  - Edit: is_translation_plainlanguage
+    button: |
+      **Translate to plain language**:
+      ${ word(yesno(is_translation_plainlanguage)) }
+  - Edit: is_appointment_reminders
+    button: |
+      **Appointment reminders**:
+      ${ word(yesno(is_appointment_reminders)) }
+  - Edit: other_any_two
+    button: |
+      **Other any two**:
+      ${ other_any_two }
+  - Edit: DCF_region
+    button: |
+      **Dcf region**:
+      ${ DCF_region }
+  - Edit: is_diff_loc
+    button: |
+      **Different location**:
+      ${ word(yesno(is_diff_loc)) }
+  - Edit: is_shorter_par_time
+    button: |
+      **Shorter parenting time**:
+      ${ word(yesno(is_shorter_par_time)) }
+  - Edit: is_other_filling_1
+    button: |
+      **Other fill-in one**:
+      ${ word(yesno(is_other_filling_1)) }
+  - Edit: is_written_summary
+    button: |
+      **Written summary**:
+      ${ word(yesno(is_written_summary)) }
+  - Edit: is_virtual_meetings
+    button: |
+      **Virtual meetings**:
+      ${ word(yesno(is_virtual_meetings)) }
+  - Edit: is_translation_any
+    button: |
+      **Translation**:
+      ${ is_translation_any }
+  - Edit: is_change_letters_written_simpler
+    button: |
+      **Change letters to be written simpler**:
+      ${ word(yesno(is_change_letters_written_simpler)) }
+  - Edit: is_change_taught_par_skills_any
+    button: |
+      **Is change taught par skills any**:
+      ${ is_change_taught_par_skills_any }
+  - Edit: is_meeting_materials_preprepared
+    button: |
+      **Meeting materials preprepared**:
+      ${ word(yesno(is_meeting_materials_preprepared)) }
+---
+continue button field: users.revisit
+question: |
+  Edit users
+subquestion: |
+  ${ users.table }
+
+  ${ users.add_action() }
+---
+table: users.table
+rows: users
+columns:
+  - Contact other: |
+      row_item.contact_other if defined("row_item.contact_other") else ""
+  - Contact phone: |
+      row_item.contact_phone if defined("row_item.contact_phone") else ""
+  - Name: |
+      row_item.name.full() if defined("row_item.name.first") else ""
+edit:
+  - contact_other
+  - contact_phone
+  - name.first
+confirm: True
+
+---
+id: download dcf_disability_accommodations
+event: dcf_disability_accommodations_download
+question: |
+  All done
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+  
+  View, download and send your form below. Click the "Edit answers" button to fix any mistakes.
+
+  ${ action_button_html(url_action('review_dcf_disability_accommodations'), label='Edit answers', color='info') }
+  
+  
+  ${ al_user_bundle.download_list_html() }
+  
+
+  ${ al_user_bundle.send_button_html(show_editable_checkbox=True) }
+
+progress: 100
+---
+# ALDocument objects specify the metadata for each template
+objects:
+  - dcf_disability_accommodations_Post_interview_instructions: ALDocument.using(title="Instructions", filename="dcf_disability_accommodations_next_steps.docx", enabled=True, has_addendum=False)
+  - dcf_disability_accommodations_attachment: ALDocument.using(title="DCF disability accommodations", filename="dcf_disability_accommodations", enabled=True, has_addendum=False, )
+---
+# Bundles group the ALDocuments into separate downloads, such as for court and for the user
+objects:
+  - al_user_bundle: ALDocumentBundle.using(elements=[dcf_disability_accommodations_Post_interview_instructions, dcf_disability_accommodations_attachment], filename="dcf_disability_accommodations", title="All forms to download for your records", enabled=True)
+  - al_recipient_bundle: ALDocumentBundle.using(elements=[dcf_disability_accommodations_attachment],  filename="dcf_disability_accommodations", title="All forms to file", enabled=True)
+---
+# Each attachment defines a key in an ALDocument. We use `i` as the placeholder here so the same template is 
+# used for "preview" and "final" keys, and logic in the template checks the value of 
+# `i` to show or hide the user's signature
+attachment:
+  name: Post-interview-Instructions
+  filename: dcf_disability_accommodations_next_steps
+  docx template file: dcf_disability_accommodations_next_steps.docx
+  variable name: dcf_disability_accommodations_Post_interview_instructions[i]
+  skip undefined: True
+  tagged pdf: True
+---
+attachment:
+  name: dcf disability accommodations
+  filename: dcf_disability_accommodations
+  variable name: dcf_disability_accommodations_attachment[i]
+  skip undefined: True
+  docx template file: dcf_disability_accommodations.docx
+  tagged pdf: True
+
+
+
